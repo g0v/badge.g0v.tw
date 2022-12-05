@@ -42,4 +42,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getData()
+    {
+        return json_decode($this->data);
+    }
+
+    public static function findByLoginID($login_id)
+    {
+        return User::where('ids', '@>', json_encode($login_id))->first();
+    }
 }
