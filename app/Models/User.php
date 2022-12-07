@@ -52,4 +52,16 @@ class User extends Authenticatable
     {
         return User::where('ids', '@>', json_encode($login_id))->first();
     }
+
+    public function isServiceUserPublic($service_user)
+    {
+        $public = $this->getData()->public;
+        if (is_scalar($service_user)) {
+            $service_user = ServiceUser::find($service_user);
+        }
+        if (property_exists($public, $service_user->id)) {
+            return $public->{$service_user->id};
+        }
+        return $service_user->service->getData()->public;
+    }
 }
