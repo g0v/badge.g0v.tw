@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BadgeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,5 +16,6 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', [IndexController::class, 'index']);
+Route::get('/_/badge/show', [BadgeController::class, 'show']);
 Route::get('/{user}', [UserController::class, 'show']);
 

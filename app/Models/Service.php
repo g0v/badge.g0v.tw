@@ -10,7 +10,11 @@ class Service extends Model
 
     public function getData()
     {
-        return json_decode($this->data);
+        $data = json_decode($this->data);
+        if (!property_exists($data, 'public')) {
+            $data->public = true;
+        }
+        return $data;
     }
 
 }
