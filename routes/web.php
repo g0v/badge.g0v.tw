@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BadgeController;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,5 +18,8 @@ use App\Http\Controllers\BadgeController;
 
 Route::get('/', [IndexController::class, 'index']);
 Route::get('/_/badge/show', [BadgeController::class, 'show']);
+Route::get('/_/user/googlelogin', [AuthController::class, 'redirectToGoogle']);
+Route::get('/_/user/googledone', [AuthController::class, 'handleGoogleCallback']);
+Route::get('/_/user/logout', [AuthController::class, 'logout']);
 Route::get('/{user}', [UserController::class, 'show']);
 
