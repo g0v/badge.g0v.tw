@@ -36,5 +36,11 @@ return [
         'redirect' => 'https://' . $_SERVER['HTTP_HOST'] . '/_/user/googledone',
     ],
 
+    'github' => [
+        'client_id' => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET'),
+        'redirect' => 'https://' . $_SERVER['HTTP_HOST'] . '/_/user/githubdone',
+    ],
+
 ];
 

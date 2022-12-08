@@ -18,6 +18,8 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', [IndexController::class, 'index']);
 Route::get('/_/badge/show', [BadgeController::class, 'show']);
+Route::get('/_/user/githublogin', [AuthController::class, 'redirectToGithub']);
+Route::get('/_/user/githubdone', [AuthController::class, 'handleGithubCallback']);
 Route::get('/_/user/googlelogin', [AuthController::class, 'redirectToGoogle']);
 Route::get('/_/user/googledone', [AuthController::class, 'handleGoogleCallback']);
 Route::get('/_/user/logout', [AuthController::class, 'logout']);

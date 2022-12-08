@@ -65,4 +65,51 @@ class AuthController extends Controller
             return redirect('/_/user/');
         }
     }
+
+    public function redirectToGithub()
+    {
+        session(['next' => $_GET['next'] ?? '']);
+        return Socialite::driver('github')
+            ->scopes(['email'])
+            ->redirect();
+    }
+
+    public function handleGithubCallback()
+    {
+        try {
+            $login_info = Socialite::driver('github')->user();
+        } catch (\Exception $e) {
+            return view('alert')->with([
+                'message' => 'login failed: ' . $e->getMessage(),
+                'next' => '/',
+            ]);
+        }
+        $next = session('next');
+
+        if (!$login_info->email) {
+            return view('alert')->with([
+                'message' => 'login failed',
+                'next' => '/',
+            ]);
+        }
+        $email = $login_info->email;
+        if ($login_info->avatar) {
+            $login_info->avatar = preg_replace('/=s96-c$/', '=s1000', $login_info->avatar);
+            session(['avatar' => $login_info->avatar]);
+        } else {
+            session(['avatar' => '']);
+        }
+
+        session(['login_id' => "github://{$login_info->user['id']}"]);
+        session(['login_name' => $login_info->nickname]);
+        $ids = [];
+        $ids[] = $email;
+        $ids[] = "github://{$login_info->user['id']}";
+        session(['ids' => $ids]);
+        if ($next) {
+            return redirect($next);
+        } else {
+            return redirect('/_/user/');
+        }
+    }
 }
