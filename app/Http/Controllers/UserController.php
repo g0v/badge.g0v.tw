@@ -86,4 +86,17 @@ class UserController extends Controller
 			'next' => '/_/user/edit',
 		]);
     }
+
+	public function delete()
+	{
+        if (!$user_id = session('user_id')) {
+            return redirect('/_/user');
+        }
+        $user = User::find($user_id);
+        if ($_POST['name'] != $user->name) {
+            return redirect('/_/user/edit');
+        }
+        $user->delete();
+        return redirect('/_/user/logout');
+	}
 }
