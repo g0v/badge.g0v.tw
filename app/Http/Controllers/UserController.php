@@ -21,4 +21,31 @@ class UserController extends Controller
             'user' => $u,
         ]);
     }
+
+    public function index()
+    {
+        if ($user_id = session('user_id')) {
+            return redirect('/_/user/edit');
+        }
+
+        if (!$login_id = session('login_id')) {
+            return redirect('/');
+        }
+
+        if ($user = User::findByLoginID($login_id)) {
+            session(['user_id' => $user->id]);
+            return redirect('/_/user/edit');
+        }
+
+        $ids = session('ids');
+        if (!$users = ServiceUser::searchByIds($ids)) {
+            return view('alert')->with([
+                'message' => '您目前還未有任何成就可以領取，請期待下一版本改版',
+                'next' => '/',
+            ]);
+        }
+
+        return redirect('/_/user/new');
+
+    }
 }
