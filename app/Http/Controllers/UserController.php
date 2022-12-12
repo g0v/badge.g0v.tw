@@ -48,4 +48,42 @@ class UserController extends Controller
         return redirect('/_/user/new');
 
     }
+
+    public function edit()
+    {
+        if (!$user_id = session('user_id')) {
+            return redirect('/_/user/');
+        }
+
+        if (!$user = User::find($user_id)) {
+            return redirect('/_/user/new');
+        }
+
+        return view('user/edit', [
+            'ServiceUser' => ServiceUser::class,
+            'user' => $user,
+            'User' => User::class,
+            'ServiceBadge' => ServiceBadge::class,
+        ]);
+	}
+
+    public function editPost()
+    {
+        if (!$user_id = session('user_id')) {
+            return redirect('/_/user/');
+        }
+
+        if (!$user = User::find($user_id)) {
+            return redirect('/_/user/new');
+        }
+
+		$data = json_decode($user->data);
+		$data->info = $_POST['info'];
+		$user->data = json_encode($data);
+		$user->save();
+		return view('alert')->with([
+			'message' => '更新完成',
+			'next' => '/_/user/edit',
+		]);
+    }
 }
