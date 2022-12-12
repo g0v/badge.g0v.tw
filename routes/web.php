@@ -18,6 +18,8 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', [IndexController::class, 'index']);
 Route::get('/_/badge/show', [BadgeController::class, 'show']);
+Route::get('/_/user/slacklogin', [AuthController::class, 'redirectToSlack']);
+Route::get('/_/user/slackdone', [AuthController::class, 'handleSlackCallback']);
 Route::get('/_/user/githublogin', [AuthController::class, 'redirectToGithub']);
 Route::get('/_/user/githubdone', [AuthController::class, 'handleGithubCallback']);
 Route::get('/_/user/googlelogin', [AuthController::class, 'redirectToGoogle']);

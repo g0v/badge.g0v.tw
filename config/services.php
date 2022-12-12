@@ -42,5 +42,11 @@ return [
         'redirect' => 'https://' . $_SERVER['HTTP_HOST'] . '/_/user/githubdone',
     ],
 
+    'slack' => [
+        'client_id' => env('SLACK_CLIENT_ID'),
+        'client_secret' => env('SLACK_CLIENT_SECRET'),
+        'redirect' => 'https://' . $_SERVER['HTTP_HOST'] . '/_/user/slackdone',
+    ],
+
 ];
 

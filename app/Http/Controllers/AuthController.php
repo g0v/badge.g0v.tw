@@ -112,4 +112,50 @@ class AuthController extends Controller
             return redirect('/_/user/');
         }
     }
+
+    public function redirectToSlack()
+    {
+        session(['next' => $_GET['next'] ?? '']);
+        return Socialite::driver('slack')
+            ->scopes(['identity.basic', 'identity.avatar', 'identity.email'])
+            ->redirect();
+    }
+
+    public function handleSlackCallback()
+    {
+        try {
+            $login_info = Socialite::driver('slack')->user();
+        } catch (\Exception $e) {
+            return view('alert')->with([
+                'message' => 'login failed: ' . $e->getMessage(),
+                'next' => '/',
+            ]);
+        }
+        $next = session('next');
+
+        if (!$login_info->email) {
+            return view('alert')->with([
+                'message' => 'login failed',
+                'next' => '/',
+            ]);
+        }
+        $email = $login_info->email;
+        if ($login_info->avatar) {
+            session(['avatar' => $login_info->avatar]);
+        } else {
+            session(['avatar' => '']);
+        }
+
+        session(['login_id' => "slack://{$login_info->id}"]);
+        session(['login_name' => $login_info->name]);
+        $ids = [];
+        $ids[] = "slack://{$login_info->id}";
+        $ids[] = $email;
+        session(['ids' => $ids]);
+        if ($next) {
+            return redirect($next);
+        } else {
+            return redirect('/_/user/');
+        }
+    }
 }
