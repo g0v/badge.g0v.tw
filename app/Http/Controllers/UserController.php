@@ -175,7 +175,7 @@ class UserController extends Controller
 			if ($avatar = session('avatar')) {
 				$d->avatar = $avatar;
 			}
-			$u = User::insert([
+			$u = User::create([
 				'name' => $_POST['id'],
 				'ids' => json_encode($ids),
 				'data' => json_encode($d),
