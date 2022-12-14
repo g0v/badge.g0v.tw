@@ -66,4 +66,21 @@ class ServiceUser extends Model
         return json_decode($this->data);
     }
 
+    public static function getUserIdPrefixByIds($ids)
+    {
+        $users = self::searchByIds($ids);
+        if (!$users) {
+            return [];
+        }
+
+        $names = [];
+        foreach ($users as $u) {
+            $n = preg_replace('#\s#', '', strtolower($u->getData()->name));
+            if ($n) {
+                $names[] = $n;
+            }
+        }
+        return array_unique($names);
+    }
+
 }
