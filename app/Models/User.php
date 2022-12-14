@@ -88,6 +88,7 @@ class User extends Authenticatable
         foreach (ServiceUser::searchByIds($ids) as $su) {
             $d->service_users[] = $su->id;
         }
-        $this->update(['data' => json_encode($d)]);
+        $this->data = json_encode($d);
+        $this->save();
     }
 }
