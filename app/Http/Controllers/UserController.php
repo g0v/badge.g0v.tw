@@ -187,6 +187,27 @@ class UserController extends Controller
 
 		return $this->alert('建立成功', '/_/user/edit');
 
-	}
+    }
+
+    public function setpublic()
+    {
+        if (!$login_id = session('login_id')) {
+            return redirect('/');
+        }
+
+        if (!$user = User::findByLoginID($login_id)) {
+            return redirect('/');
+        }
+
+        $data = $user->getData();
+        $public = $data->public;
+        foreach (ServiceUser::searchByIds(json_decode($user->ids)) as $suser) {
+            $public->{$suser->id} = array_key_exists($suser->id, $_POST['service_user']);
+        }
+        $data->public = $public;
+        $user->data = json_encode($data);
+        $user->save();
+        return redirect('/_/user/edit');
+    }
 
 }
