@@ -45,9 +45,9 @@ $info = $data->info;
 <form method="post" action="/_/user/edit?method=info">
     @csrf
     代號：{{ $user->name }}<br>
-    顯示名稱：<input type="text" name="info[name]" value="{{ $info->name }}"><br>
-    三個關鍵字：<input type="text" name="info[keyword]" value="{{ $info->keyword }}"><br>
-    自我介紹：<textarea name="info[intro]">{{ $info->intro }}</textarea>
+    顯示名稱：<input type="text" name="info[name]" value="{{ $info->name ?? '' }}"><br>
+    三個關鍵字：<input type="text" name="info[keyword]" value="{{ $info->keyword ?? '' }}"><br>
+    自我介紹：<textarea name="info[intro]">{{ $info->intro ?? '' }}</textarea>
     <button type="submit">修改</button>
 </form>
 <h2>刪除我的帳號</h2>
