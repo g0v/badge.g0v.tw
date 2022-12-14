@@ -210,4 +210,24 @@ class UserController extends Controller
         return redirect('/_/user/edit');
     }
 
+    public function setavatar()
+    {
+        $avatar = session('avatar');
+        if (!$avatar) {
+            return $this->alert('找不到頭像', '/_/user/edit');
+        }
+        if (!$user_id = session('user_id')) {
+            return redirect('/_/user/');
+        }
+
+        if (!$user = User::find($user_id)) {
+            return redirect('/_/user/new');
+        }
+        $d = json_decode($user->data);
+        $d->avatar = $avatar;
+        $user->data = json_encode($d);
+        $user->save();
+        return redirect('/_/user/edit');
+    }
+
 }
