@@ -99,4 +99,94 @@ class UserController extends Controller
         $user->delete();
         return redirect('/_/user/logout');
 	}
+
+	public function newuser()
+	{
+        if ($user_id = session('user_id')) {
+            return redirect('/_/user/edit');
+        }
+
+        if (!$login_id = session('login_id')) {
+            return redirect('/');
+        }
+
+        if ($user = User::findByLoginID($login_id)) {
+            session(['user_id' => $user->id]);
+            return redirect('/_/user/edit');
+        }
+
+        $ids = session('ids');
+        if (!$users = ServiceUser::searchByIds($ids)) {
+			return view('alert')->with([
+				'message' => '您目前還未有任何成就可以領取，請期待下一版本改版',
+				'next' => '/',
+			]);
+		}
+
+		$prefixs = ServiceUser::getUserIdPrefixByIds($ids);
+        return view('user/new', [
+            'ServiceUser' => ServiceUser::class,
+            'User' => User::class,
+            'login_id' => $login_id,
+            'ids' => $ids,
+            'prefixs' => $prefixs,
+        ]);
+	}
+
+	public function newuserPost()
+	{
+        if ($user_id = session('user_id')) {
+            return redirect('/_/user/edit');
+        }
+
+        if (!$login_id = session('login_id')) {
+            return redirect('/');
+        }
+
+        if ($user = User::findByLoginID($login_id)) {
+            session(['user_id' => $user->id]);
+            return redirect('/_/user/edit');
+        }
+
+        $ids = session('ids');
+        if (!$users = ServiceUser::searchByIds($ids)) {
+			return $this->alert('您目前還未有任何成就可以領取，請期待下一版本改版', '/');
+		}
+
+		if (strlen($_POST['id']) < 2) {
+			return $this->alert('id 太短', '/_/user/new');
+		}
+		if (strlen($_POST['id']) > 16) {
+			return $this->alert('id 太長', '/_/user/new');
+		}
+		$id = $_POST['id'];
+		$prefixs = ServiceUser::getUserIdPrefixByIds($ids);
+		if ($prefixs) {
+			$prefixs = array_filter($prefixs, function($s) use ($id){
+				return strpos($id, $s) === 0;
+			});
+			if (count($prefixs) == 0) {
+				return $this->alert("id 必須以 " . implode(' 或 ', $prefixs) . " 開頭", '/_/user/new/');
+			}
+		}
+
+		try {
+			$d = new \StdClass;
+			if ($avatar = session('avatar')) {
+				$d->avatar = $avatar;
+			}
+			$u = User::insert([
+				'name' => $_POST['id'],
+				'ids' => json_encode($ids),
+				'data' => json_encode($d),
+			]);
+			$u->updateServiceUsers();
+		} catch (Pix_Table_DuplicateException $e) {
+			return $this->alert('代號已經被使用了，請再更換代號', '/_/user/new');
+		}
+
+		return $this->alert('建立成功', '/_/user/edit');
+
+	}
+
 }
