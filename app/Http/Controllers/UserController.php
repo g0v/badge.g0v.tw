@@ -230,4 +230,27 @@ class UserController extends Controller
         return redirect('/_/user/edit');
     }
 
+    public function addid()
+    {
+        if (!$user_id = session('user_id')) {
+            return redirect('/_/user');
+        }
+        $user = User::find($user_id);
+        if (!$login_id = session('login_id')) {
+            return redirect('/_/user');
+        }
+        $new_ids = session('ids');
+        if (!ServiceUser::searchByIds($new_ids)) {
+            return $this->alert('此身份沒有任何成就無法新增', '/_/user/edit');
+        }
+        $ids = json_decode($user->ids);
+        $ids = array_merge($ids, $new_ids);
+        $ids = array_unique($ids);
+        $user->ids = json_encode($ids);
+        $user->save();
+        $user->updateServiceUsers();
+
+        return redirect('/_/user/edit');
+    }
+
 }

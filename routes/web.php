@@ -31,6 +31,7 @@ Route::get('/_/user/googlelogin', [AuthController::class, 'redirectToGoogle']);
 Route::get('/_/user/googledone', [AuthController::class, 'handleGoogleCallback']);
 Route::post('/_/user/setpublic', [UserController::class, 'setpublic']);
 Route::get('/_/user/setavatar', [UserController::class, 'setavatar']);
+Route::get('/_/user/addid', [UserController::class, 'addid']);
 Route::post('/_/user/delete', [UserController::class, 'delete']);
 Route::get('/_/user/logout', [AuthController::class, 'logout']);
 Route::get('/{user}', [UserController::class, 'show']);
