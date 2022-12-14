@@ -47,7 +47,18 @@ class User extends Authenticatable
 
     public function getData()
     {
-        return json_decode($this->data);
+        $data = json_decode($this->data);
+        if (!property_exists($data, 'info')) {
+            $data->info = new \StdClass;
+        }
+        if (!property_exists($data, 'public')) {
+            $data->public = new \StdClass;
+        }
+
+        if (!property_exists($data->info, 'name')) {
+            $data->info->name = $this->name;
+        }
+        return $data;
     }
 
     public static function findByLoginID($login_id)
