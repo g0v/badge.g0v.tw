@@ -10,4 +10,11 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    public function alert($message, $next)
+    {
+        return view('alert')->with([
+            'message' => $message,
+            'next' => $next,
+        ]);
+    }
 }
