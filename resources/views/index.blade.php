@@ -3,11 +3,13 @@
 @section('content')
 <h3>最新使用者</h3>
 <div class="row">
-@foreach ($User::orderBy('id', 'desc')->take(100)->get() as $user) 
+@foreach ($User::orderBy('id', 'desc')->take(100)->get() as $user)
 <?php $data = $user->getData(); ?>
 <div class="card col-2">
     @isset ($data->avatar)
-    <img class="card-img-top" src="{{ $data->avatar }}" width="260" height="260">
+    <div class="ratio ratio-1x1 card-img-top">
+        <img style="object-fit: cover;" src="{{ $data->avatar }}">
+    </div>
     @endisset
     <div class="card-body">
         <a href="/<?= urlencode($user->name) ?>">
