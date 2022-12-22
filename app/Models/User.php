@@ -55,8 +55,10 @@ class User extends Authenticatable
             $data->public = new \StdClass;
         }
 
-        if (!property_exists($data->info, 'name')) {
-            $data->info->name = $this->name;
+        foreach (['name', 'intro', 'keyword'] as $k) {
+            if (!property_exists($data->info, $k)) {
+                $data->info->{$k} = $this->{$k};
+            }
         }
         return $data;
     }
