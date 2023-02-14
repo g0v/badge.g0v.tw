@@ -5,6 +5,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ApiController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,3 +37,4 @@ Route::post('/_/user/delete', [UserController::class, 'delete']);
 Route::get('/_/user/logout', [AuthController::class, 'logout']);
 Route::get('/{user}', [UserController::class, 'show']);
 
+Route::get('/_/api/me', [ApiController::class, 'me']);
