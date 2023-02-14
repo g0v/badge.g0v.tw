@@ -6,6 +6,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ApiController;
+
+if (env('https') == 'on') {
+    URL::forceScheme('https');
+}
 /*
 |--------------------------------------------------------------------------
 | Web Routes
