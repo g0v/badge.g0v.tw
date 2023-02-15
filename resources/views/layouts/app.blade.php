@@ -48,18 +48,22 @@ _gaq.push(['_trackPageview']);
                 </ul>
             </li>
             @else
-            <span class="navbar-text">Hi! {{ session('login_name') }}</span>
-            @if ($user = $User::findByLoginID(session('login_id')))
-            <li class="nav-item">
-            <a href="/<?= urlencode($user->name) ?>" class="nav-link">瀏覽我的頁面</a>
-            </li>
-            <li class="nav-item">
-            <a href="/_/user/edit" class="nav-link">修改個人頁面</a>
-            </li>
-            @endif
-            <li class="nav-item">
-            <a href="/_/user/logout" class="nav-link">登出</a>
-            </li>
+                <span class="navbar-text">Hi! {{ session('login_name') }}</span>
+                @if ($user = $User::findByLoginID(session('login_id')))
+                    <li class="nav-item">
+                    <a href="/<?= urlencode($user->name) ?>" class="nav-link">瀏覽我的頁面</a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="/_/user/edit" class="nav-link">修改個人頁面</a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                    <a href="/_/user/new" class="nav-link">建立個人頁面</a>
+                    </li>
+                @endif
+                <li class="nav-item">
+                <a href="/_/user/logout" class="nav-link">登出</a>
+                </li>
             @endif
         </ul>
     </div>
