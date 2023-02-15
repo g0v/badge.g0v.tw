@@ -6,7 +6,7 @@
 
 <form method="post">
     @csrf
-    代號：<input type="text" name="id" value="{{ $prefixs[0] }}">(您的代號必須要以 {{ implode(' 或 ', $prefixs) }} 開頭)
+    代號：<input type="text" name="id" value="">
     <br>
     連結身份：(以下資料不會公開，僅供系統連結身份使用）<br>
     <ul>

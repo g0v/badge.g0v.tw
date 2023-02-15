@@ -38,12 +38,6 @@ class UserController extends Controller
         }
 
         $ids = session('ids');
-        if (!$users = ServiceUser::searchByIds($ids)) {
-            return view('alert')->with([
-                'message' => '您目前還未有任何成就可以領取，請期待下一版本改版',
-                'next' => '/',
-            ]);
-        }
 
         return redirect('/_/user/new');
 
@@ -116,20 +110,12 @@ class UserController extends Controller
         }
 
         $ids = session('ids');
-        if (!$users = ServiceUser::searchByIds($ids)) {
-			return view('alert')->with([
-				'message' => '您目前還未有任何成就可以領取，請期待下一版本改版',
-				'next' => '/',
-			]);
-		}
 
-		$prefixs = ServiceUser::getUserIdPrefixByIds($ids);
         return view('user/new', [
             'ServiceUser' => ServiceUser::class,
             'User' => User::class,
             'login_id' => $login_id,
             'ids' => $ids,
-            'prefixs' => $prefixs,
         ]);
 	}
 
@@ -149,9 +135,6 @@ class UserController extends Controller
         }
 
         $ids = session('ids');
-        if (!$users = ServiceUser::searchByIds($ids)) {
-			return $this->alert('您目前還未有任何成就可以領取，請期待下一版本改版', '/');
-		}
 
 		if (strlen($_POST['id']) < 2) {
 			return $this->alert('id 太短', '/_/user/new');
@@ -160,15 +143,6 @@ class UserController extends Controller
 			return $this->alert('id 太長', '/_/user/new');
 		}
 		$id = $_POST['id'];
-		$prefixs = ServiceUser::getUserIdPrefixByIds($ids);
-		if ($prefixs) {
-			$prefixs = array_filter($prefixs, function($s) use ($id){
-				return strpos($id, $s) === 0;
-			});
-			if (count($prefixs) == 0) {
-				return $this->alert("id 必須以 " . implode(' 或 ', $prefixs) . " 開頭", '/_/user/new/');
-			}
-		}
 
 		try {
 			$d = new \StdClass;
@@ -240,9 +214,6 @@ class UserController extends Controller
             return redirect('/_/user');
         }
         $new_ids = session('ids');
-        if (!ServiceUser::searchByIds($new_ids)) {
-            return $this->alert('此身份沒有任何成就無法新增', '/_/user/edit');
-        }
         $ids = json_decode($user->ids);
         $ids = array_merge($ids, $new_ids);
         $ids = array_unique($ids);
