@@ -1,5 +1,9 @@
 <?php
 
+$scheme = 'http';
+if (getenv('https') == 'on') {
+    $scheme = 'https';
+}
 return [
 
     /*
@@ -33,19 +37,19 @@ return [
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/_/user/googledone',
+        'redirect' => $scheme . '://' . $_SERVER['HTTP_HOST'] . '/_/user/googledone',
     ],
 
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
-        'redirect' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/_/user/githubdone',
+        'redirect' => $scheme . '://' . $_SERVER['HTTP_HOST'] . '/_/user/githubdone',
     ],
 
     'slack' => [
         'client_id' => env('SLACK_CLIENT_ID'),
         'client_secret' => env('SLACK_CLIENT_SECRET'),
-        'redirect' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/_/user/slackdone',
+        'redirect' => $scheme . '://' . $_SERVER['HTTP_HOST'] . '/_/user/slackdone',
     ],
 
 ];
