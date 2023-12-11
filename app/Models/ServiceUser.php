@@ -24,6 +24,7 @@ class ServiceUser extends Model
         if (!$ids) {
             return;
         }
+        $ids = array_values((array)$ids);
         $terms = array_map(function($id) {
             return sprintf("(data->'hash_ids' @> '\"%s\"')", md5($id . 'g0vg0v'));
         }, $ids);
